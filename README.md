@@ -1,3 +1,8 @@
+![Azure VM](https://img.shields.io/badge/Azure-Virtual%20Machine-0078D4?logo=microsoftazure&logoColor=white)
+![Datadog](https://img.shields.io/badge/Datadog-Agent%207-632CA6?logo=datadog&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA?logo=terraform&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-E95420?logo=ubuntu&logoColor=white)
+
 # Azure VM Linux + Datadog Agent (cloud-init)
 
 Lab de observabilidade com VM Linux no Azure e Datadog Agent instalado automaticamente via cloud-init no boot.
