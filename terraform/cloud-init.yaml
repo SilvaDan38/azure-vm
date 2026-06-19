@@ -3,5 +3,31 @@ package_update: true
 
 runcmd:
   - DD_API_KEY=${dd_api_key} DD_SITE="datadoghq.com" DD_ENV="lab" DD_HOST_TAGS="env:lab,service:vm-lab,version:1.0.0" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
-  - systemctl enable datadog-agent
-  - systemctl start datadog-agent
+  - sed -i 's/# process_config:/process_config:/' /etc/datadog-agent/datadog.yaml
+  - sed -i '/^process_config:/a\  process_collection:\n    enabled: true' /etc/datadog-agent/datadog.yaml
+  - systemctl enable datadog-agent-process && systemctl start datadog-agent-process
+  - echo "network_config:" >> /etc/datadog-agent/system-probe.yaml
+  - echo "  enabled: true" >> /etc/datadog-agent/system-probe.yaml
+  - systemctl enable datadog-agent-sysprobe && systemctl start datadog-agent-sysprobe
+  - sed -i 's/# apm_config:/apm_config:/' /etc/datadog-agent/datadog.yaml
+  - sed -i '/^apm_config:/a\  enabled: true' /etc/datadog-agent/datadog.yaml
+  - systemctl enable datadog-agent-trace && systemctl start datadog-agent-trace
+  - sed -i 's/# logs_enabled: false/logs_enabled: true/' /etc/datadog-agent/datadog.yaml
+  - |
+    cat > /etc/datadog-agent/conf.d/syslog.d/conf.yaml <<EOF
+    logs:
+      - type: file
+        path: /var/log/syslog
+        source: syslog
+        service: vm-lab
+    EOF
+  - chown dd-agent:dd-agent /etc/datadog-agent/conf.d/syslog.d/conf.yaml
+  - usermod -aG syslog dd-agent
+  - |
+    cat >> /etc/datadog-agent/datadog.yaml <<EOF
+
+    confd_path: /etc/datadog-agent/conf.d
+    profiling:
+      enabled: true
+    EOF
+  - systemctl restart datadog-agent
