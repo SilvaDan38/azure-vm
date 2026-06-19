@@ -1,0 +1,45 @@
+# ========================
+# Terraform
+# ========================
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+terraform/.terraform.lock.hcl
+terraform/crash.log
+terraform/*.tfvars
+terraform/override.tf
+terraform/override.tf.json
+
+# ========================
+# Secrets & Environment
+# ========================
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+
+# API Keys / Credentials
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+*secret*
+!*secret*.yaml.example
+
+# Azure
+.azure/
+azureProfile.json
+
+# ========================
+# IDE / OS
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

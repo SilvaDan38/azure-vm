@@ -1,0 +1,7 @@
+#cloud-config
+package_update: true
+
+runcmd:
+  - DD_API_KEY=${dd_api_key} DD_SITE="datadoghq.com" DD_ENV="lab" DD_HOST_TAGS="env:lab,service:vm-lab,version:1.0.0" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+  - systemctl enable datadog-agent
+  - systemctl start datadog-agent
